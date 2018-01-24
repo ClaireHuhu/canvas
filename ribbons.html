@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+    body,html{
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        padding: 0;
+    }
+    canvas{
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    </style>
+</head>
+<body>
+    <canvas></canvas>
+    <script type="text/javascript">
+    const canvas = document.querySelector('canvas');
+    const cvs = canvas.getContext('2d');
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    canvas.width = w;
+    canvas.height = h;
+    let loc = [[0,400],[0,500]];
+    
+    const grd = cvs.createLinearGradient(0,0,w,0);
+    grd.addColorStop(0,'rgba(255,182,193,1)');
+    grd.addColorStop(1,'rgba(100,149,237,1)');
+    cvs.fillStyle = grd;
+
+    function next (dot) {
+        let x = dot[0] + Math.random() * 100;
+        let dela = (Math.random()*2-1) * 100;
+        let y = dot[1] + dela;
+        y = y >0 && y < h ? y : dot[1] - dela;
+        return [x,y];
+    }
+    while(loc[loc.length -1][0] < w) {
+        loc.push(next(loc[loc.length -1]));
+    }
+    for(let j = 2; j < loc.length; j++){
+        triangle(loc[j-2],loc[j-1],loc[j]);
+    }
+    function triangle (a,b,c) {
+        cvs.beginPath();
+        cvs.moveTo(a[0], a[1]);
+        cvs.lineTo(b[0], b[1]);
+        cvs.lineTo(c[0], c[1]);
+        cvs.fill();
+    }
+    </script>
+</body>
+</html>
